@@ -13,8 +13,16 @@ interface Task {
 export function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
+  const [error, setError] = useState<Boolean>(false);
 
   function handleCreateNewTask() {
+    setError(false);
+    if (newTaskTitle.length < 1)
+    {
+      setError(true);
+      return;
+    }
+
     setTasks([...tasks, {id: Date.now(), title: newTaskTitle, isComplete: false}]);
     setNewTaskTitle('');
   }
@@ -37,6 +45,7 @@ export function TaskList() {
 
         <div className="input-group">
           <input 
+            className={error ? 'error' : ''}
             type="text" 
             placeholder="Adicionar novo todo" 
             onChange={(e) => setNewTaskTitle(e.target.value)}
